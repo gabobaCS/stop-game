@@ -4,7 +4,7 @@ var io = require('socket.io')(http);
 
 var rooms = []
 io.on('connection', function(socket){
-    console.log('a user connected');
+    console.log(`a user connected ${socket.id}`);
 
     socket.emit('roomlist', rooms);
 
