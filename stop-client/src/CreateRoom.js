@@ -13,30 +13,36 @@ class CreateRoom extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      socket: socketIOClient("http://127.0.0.1:4000"),
       room_name: '',
-      available_rooms: []
+      available_rooms: [],
+      submitDisabled: true,
+      endpoint: "http://127.0.0.1:4000"
     };
   }
 
+  //Initializing the socket to be searched for when the component loads based on the endpoint in the state.
   componentDidMount() {
-    this.state.socket.on('roomlist', rooms => {
+    const { endpoint } = this.state;
+    const socket = socketIOClient(endpoint);
+    socket.on('roomlist', rooms => {
       this.setState({
-        available_rooms: rooms
+        available_rooms: rooms,
       })
-
     });
   }
 
-  handleChange(event){
+  handleChange(event) {
+    let textValid = event.target.value ? true : false;
     this.setState({
-      room_name: event.target.value
-    })
+      room_name: event.target.value,
+      submitDisabled: !textValid
+    });
   }
 
-  handleSubmit(event){
+  handleSubmit(event) {
     event.preventDefault();
-    this.state.socket.emit('create room', this.state.room_name)
+    const socket = socketIOClient(this.state.endpoint);
+    socket.emit('create room', this.state.room_name)
   }
 
   render() {
@@ -47,15 +53,15 @@ class CreateRoom extends Component {
       <div className='app'>
 
         <form onSubmit={this.handleSubmit}>
-          <label for="fname">Room Name:</label><br/>
-          <input type="text" id="fname" name="fname" value={this.state.room_name} onChange={this.handleChange}/><br/>
-          <input type="submit" value="Create Room"/>
+          <label>Room Name:</label><br />
+          <input type="text" value={this.state.room_name} onChange={this.handleChange} /><br />
+          <button type="submit" disabled={this.state.submitDisabled}> Create Room </button>
         </form>
         <h3>Available Rooms:</h3>
 
-          <ul>
-            {roomList}
-          </ul>
+        <ul>
+          {roomList}
+        </ul>
 
       </div>
     );
