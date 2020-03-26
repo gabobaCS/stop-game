@@ -16,6 +16,7 @@ class CreateRoom extends Component {
       room_name: '',
       available_rooms: [],
       submitDisabled: true,
+      socketConn: '',
       endpoint: "http://127.0.0.1:4000"
     };
   }
@@ -27,6 +28,7 @@ class CreateRoom extends Component {
     socket.on('roomlist', rooms => {
       this.setState({
         available_rooms: rooms,
+        socketConn: socket
       })
     });
   }
@@ -41,8 +43,7 @@ class CreateRoom extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const socket = socketIOClient(this.state.endpoint);
-    socket.emit('create room', this.state.room_name)
+    this.state.socketConn.emit('create room', this.state.room_name)
   }
 
   render() {
