@@ -1,23 +1,39 @@
 import React, { Component } from 'react'
-import CreateRoom from './CreateRoom.js'
-import Room from './Room.js'
+import Login from './components/Login.js'
+import socketIOClient from "socket.io-client";
 import {
     BrowserRouter as Router,
-    Switch,
     Route,
-    Link,
   } from "react-router-dom";
 
 export default class App extends Component {
-    constructor(props){
-        super(props)
+    constructor(){
+        super()
+        this.state = {
+            endpoint: "http://127.0.0.1:4000",
+            socket: '',
+            isUserLoggedIn: false
+        }
+    }
+
+    componentWillMount(){
+        if (this.state.socket === '') {
+            this.setState({
+                socket: socketIOClient(this.state.endpoint) 
+            });
+        }
     }
     render() {
-        console.log('props'+this.props)
+
         return (
             <Router>
-                <Route exact path='/' component={CreateRoom}/>
-                <Route path='/room/:name' component={Room}/>
+                {this.state.isUserLoggedIn ? '' : 
+                
+                <Route
+                exact path='/'
+                render={(props) => <Login {...props} socket={this.state.socket} />}
+                />}
+
             </Router>
 
         )
