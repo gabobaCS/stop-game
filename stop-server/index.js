@@ -24,6 +24,7 @@ io.on('connection', function(socket){
     //Checks if username is already in list of connected users.
     if (userInConnectedUsers(username, connectedUsers)){
       console.log('Access denied')
+      socket.emit('username already in use')
     }
     else {
       //Connects user and adds it to list.
