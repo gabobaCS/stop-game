@@ -22,13 +22,7 @@ class CreateRoom extends Component {
 
   //Initializing the socket to be searched for when the component loads based on the endpoint in the state.
   componentDidMount() {
-    const { endpoint } = this.state;
-    const socket = socketIOClient(endpoint);
-    socket.on('roomlist', rooms => {
-      this.setState({
-        available_rooms: rooms,
-      })
-    });
+
   }
 
   handleChange(event) {
@@ -41,8 +35,7 @@ class CreateRoom extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const socket = socketIOClient(this.state.endpoint);
-    socket.emit('create room', this.state.room_name)
+
   }
 
   render() {
