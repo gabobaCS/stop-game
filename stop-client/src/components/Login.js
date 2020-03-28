@@ -14,23 +14,8 @@ class Login extends Component {
       userLogged: false,
     };
   };
-/* 
-  componentWillMount(){
-    //Checks if user is already logged in to sessionStorage
-    console.log(sessionStorage.getItem('username'))
-    if (sessionStorage.getItem('username') != null){
-      this.props.socket.emit('try login', sessionStorage.getItem('username'))
-    }
-  } */
 
   componentDidMount(){
-    //Checks if user is already logged in to sessionStorage; if it is, begins login and redirects on succesful login.
-    if (sessionStorage.getItem('username') != null){
-      this.setState({
-        username: sessionStorage.getItem('username')
-      })
-      this.props.socket.emit('try login', sessionStorage.getItem('username'))
-    }
     console.log(this.props)
     //Handles login on succesful server response
     this.props.socket.on('succesful login', (username) => {
@@ -45,10 +30,11 @@ class Login extends Component {
       sessionStorage.setItem('id', this.props.socket.id);
 
       //Redirects to rooms route
-      this.props.history.push('/')
+      this.props.history.push('/rooms')
     })
 
     this.props.socket.on('username already in use', () => {
+
       this.setState({
         validUsername: false,
       })
@@ -65,6 +51,7 @@ class Login extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    console.log('will attempt login')
     //Checks if the same username is already in use
     this.props.socket.emit('try login', this.state.username)
     this.setState({
