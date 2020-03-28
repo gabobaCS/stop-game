@@ -24,24 +24,28 @@ class Login extends Component {
   } */
 
   componentDidMount(){
+    //Checks if user is already logged in to sessionStorage; if it is, begins login and redirects on succesful login.
+    if (sessionStorage.getItem('username') != null){
+      this.setState({
+        username: sessionStorage.getItem('username')
+      })
+      this.props.socket.emit('try login', sessionStorage.getItem('username'))
+    }
     console.log(this.props)
     //Handles login on succesful server response
-    this.props.socket.on('succesful login', (connectedUsers) => {
+    this.props.socket.on('succesful login', (username) => {
       console.log(this.state.username + ' has succesfully logged in');
-      console.log(connectedUsers);
+      console.log(username);
       this.setState({
         userLogged: true
       })
       //Adds user to sessionStorage
-      sessionStorage.setItem('username', this.state.username);
+      sessionStorage.setItem('username', username);
       sessionStorage.setItem('room', null);
       sessionStorage.setItem('id', this.props.socket.id);
 
       //Redirects to rooms route
-      this.props.history.push({
-        pathname: '/rooms',
-        state: {redirected: true}
-      })
+      this.props.history.push('/')
     })
 
     this.props.socket.on('username already in use', () => {

@@ -31,7 +31,7 @@ io.on('connection', function(socket){
       connectedUsers.push({'username':username, 'room': null, 'id':socket.id})
       console.log(username + ' has logged in')
       //Informs client that login was successful
-      socket.emit('succesful login', connectedUsers)
+      socket.emit('succesful login', username)
       console.log('Current connected users: ')
       console.log(connectedUsers)
 
