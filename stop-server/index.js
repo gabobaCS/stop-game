@@ -34,9 +34,38 @@ io.on('connection', function(socket){
       socket.emit('succesful login', username)
       console.log('Current connected users: ')
       console.log(connectedUsers)
-
     }
+  })
 
+  socket.on('join room', (userObject) => {
+    //Checks if user is already logged in to room
+    let i;
+    for (i = 0; i < connectedUsers.length; i++) {
+      if (connectedUsers[i].username == userObject.username) {
+        console.log(userObject.username + ' is trying to join: ' + userObject.room)
+        if (connectedUsers[i].room != userObject.room){
+          socket.join(userObject.room);
+          connectedUsers[i].room = userObject.room;
+          console.log(userObject.username + ' has joined: ' + userObject.room);
+          console.log(connectedUsers)
+          socket.emit('succesful room join', userObject)
+          break
+        }
+      }
+    }
+  })
+
+  socket.on('leave room', (userObject) => {    
+    let i;
+    for (i = 0; i < connectedUsers.length; i++) {
+      if (connectedUsers[i].username == userObject.username) {
+        console.log(userObject.username + ' is leaving: ' + userObject.room)
+        connectedUsers[i].room = null
+        socket.leave(userObject.room)
+        break
+      }
+    }
+    console.log(connectedUsers)
   })
 
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Login from './components/Login.js';
-import Rooms from './components/Rooms.js'
+import Rooms from './components/Rooms.js';
+import Room1 from './components/Room1.js'
 import socketIOClient from "socket.io-client";
 import {
     BrowserRouter as Router,
@@ -29,18 +30,19 @@ export default class App extends Component {
         //Renders only if socket connection has been established
         if (this.state.socket != ''){
             return (
-                <Router>
-                    {this.state.isUserLoggedIn ? '' : 
-                    
+                <Router>               
                     <Route
                     exact path='/'
                     render={(props) => <Login {...props} socket={this.state.socket} />}
-                    />}
-    
+                    />    
                     <Route
                     exact path='/rooms'
                     render={(props) => <Rooms {...props} socket={this.state.socket} />}
-                    />           
+                    />
+                    <Route
+                    exact path='/rooms/room1'
+                    render={(props) => <Room1 {...props} socket={this.state.socket} />}
+                    />                
                 </Router>
             )
         }
