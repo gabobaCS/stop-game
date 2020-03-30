@@ -29,17 +29,15 @@ export default class Rooms extends Component {
             sessionStorage.setItem('room', null);
             sessionStorage.setItem('id', this.props.socket.id);
         })
-
+        //Redirects on unsuccesful login
         this.props.socket.on('username already in use', () => {
             this.props.history.push('/')
-        }) 
-
+        })
         //Automatically unjoins user from any room on reaching page, after checking that user is connected.
         if (sessionStorage.getItem('username') != null && sessionStorage.getItem('room') != null){
             this.props.socket.emit('leave room', {username: sessionStorage.getItem('username'), room: sessionStorage.getItem('room'), id:sessionStorage.getItem('id')});
             sessionStorage.setItem('room', null)
         }
-
     }
 
     render(){

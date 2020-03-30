@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Login from './components/Login.js';
 import Rooms from './components/Rooms.js';
-import Room1 from './components/Room1.js'
+import Room1 from './components/Room1.js';
+import CreateRoom from './components/CreateRoom.js'
 import socketIOClient from "socket.io-client";
 import {
     BrowserRouter as Router,
@@ -42,7 +43,11 @@ export default class App extends Component {
                     <Route
                     exact path='/rooms/room1'
                     render={(props) => <Room1 {...props} socket={this.state.socket} />}
-                    />                
+                    />
+                    <Route
+                    exact path='/create-room'
+                    render={(props) => <CreateRoom {...props} socket={this.state.socket} />}
+                    />                   
                 </Router>
             )
         }
