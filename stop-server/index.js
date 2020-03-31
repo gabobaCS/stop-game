@@ -64,7 +64,10 @@ io.on('connection', function(socket){
   })
 
   socket.on('request list of rooms', () => {
+    console.log(socket.id)
     socket.emit('list of rooms', existingRooms)
+    // socket.removeAllListeners('request list of rooms')
+    
   })
 
   socket.on('join room', (userObject) => {
@@ -78,7 +81,7 @@ io.on('connection', function(socket){
           connectedUsers[i].room = userObject.room;
           console.log(userObject.username + ' has joined: ' + userObject.room);
           console.log(connectedUsers)
-          socket.emit('succesful room join', userObject)
+          io.sockets.in(userObject.room).emit('succesful room join', userObject)
           break
         }
       }
@@ -92,6 +95,7 @@ io.on('connection', function(socket){
         console.log(userObject.username + ' is leaving: ' + userObject.room)
         connectedUsers[i].room = null
         socket.leave(userObject.room)
+        // socket.removeAllListeners('request list of rooms')
         break
       }
     }

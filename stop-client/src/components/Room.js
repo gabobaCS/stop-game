@@ -47,8 +47,12 @@ export default class Room extends Component {
         //Handles succesful room joining
         this.props.socket.on('succesful room join', (userObject) => {
             sessionStorage.setItem('room', userObject.room);
+            console.log('here')
             console.log(userObject.username + ' has succesfully joined: ' + userObject.room)
         })
+
+        //Handles duplicate requests on /rooms
+        this.props.socket.removeAllListeners('list of rooms')
     }
     //TODO CHECK IF THIS IS THIS IS THE APPROPRIATE METHOD
     componentDidUpdate(prevProps, prevState) {

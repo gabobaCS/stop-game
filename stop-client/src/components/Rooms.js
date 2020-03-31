@@ -38,12 +38,16 @@ export default class Rooms extends Component {
         })
         //Automatically unjoins user from any room on reaching page, after checking that user is connected.
         if (sessionStorage.getItem('username') != null && sessionStorage.getItem('room') != null){
+            console.log('should leave room')
             this.props.socket.emit('leave room', {username: sessionStorage.getItem('username'), room: sessionStorage.getItem('room'), id:sessionStorage.getItem('id')});
+            //Handles duplicate messages in room by removing listener.
+            this.props.socket.removeAllListeners('succesful room join')
             sessionStorage.setItem('room', null)
         }
 
         //On mount requests list of rooms from server.
         this.props.socket.emit('request list of rooms')
+
         //Updates state with list of rooms.
         this.props.socket.on('list of rooms', (existingRooms) => {
             this.setState({
@@ -53,7 +57,6 @@ export default class Rooms extends Component {
     }
 
     render(){
-        console.log(this.state.existingRooms)
         //Checks if user is logged in in sessionStorage
         if (sessionStorage.getItem('username') == null){
             return (<Redirect to='/' />)
@@ -62,8 +65,8 @@ export default class Rooms extends Component {
             <div>
                 <ul>
                     {this.state.existingRooms.map((roomObject, index) => (
-                    <li key={roomObject.roomName}><Link to={`/rooms/${roomObject.roomName}`}>{roomObject.roomName}</Link></li>
-                        ))}
+                        <li key={roomObject.roomName}><Link to={`/rooms/${roomObject.roomName}`}>{roomObject.roomName}</Link></li>
+                    ))}
                 </ul>
             </div>
         )
