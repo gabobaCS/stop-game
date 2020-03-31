@@ -61,7 +61,6 @@ export default class Rooms extends Component {
         return (
             <div>
                 <ul>
-                    <li><Link to='/rooms/Room1'>Room1</Link></li>
                     {this.state.existingRooms.map((roomObject, index) => (
                     <li key={roomObject.roomName}><Link to={`/rooms/${roomObject.roomName}`}>{roomObject.roomName}</Link></li>
                         ))}

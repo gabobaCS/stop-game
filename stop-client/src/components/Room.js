@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Redirect, Link} from 'react-router-dom';
 
-export default class Room1 extends Component {
+export default class Room extends Component {
     constructor(props){
         super(props)
 
@@ -10,11 +10,12 @@ export default class Room1 extends Component {
         }
     }
     componentDidMount(){
+        console.log(this.props.match.params.roomName)
         //Log user to room on same socket connection
         if(this.state.isUserLoggedIn){
-            //NON DYNAMIC JOIN ROOM
-            if(sessionStorage.getItem('room') != 'room1'){
-                this.props.socket.emit('join room', {username: sessionStorage.getItem('username'), room: 'room1', id:this.props.socket.id})
+            //Dyanmically join room.
+            if(sessionStorage.getItem('room') != this.props.match.params.roomName){
+                this.props.socket.emit('join room', {username: sessionStorage.getItem('username'), room: this.props.match.params.roomName, id:this.props.socket.id})
             }
         }
 
@@ -56,9 +57,9 @@ export default class Room1 extends Component {
           console.log(this.state.isUserLoggedIn)
             //Log user to room on different socket connection
             if(this.state.isUserLoggedIn){
-                //NON DYNAMIC JOIN ROOM
-                if(sessionStorage.getItem('room') != 'room1'){
-                    this.props.socket.emit('join room', {username: sessionStorage.getItem('username'), room: 'room1', id:this.props.socket.id})
+                //Dynamically join room.
+                if(sessionStorage.getItem('room') != this.props.match.params.roomName){
+                    this.props.socket.emit('join room', {username: sessionStorage.getItem('username'), room: this.props.match.params.roomName, id:this.props.socket.id})
                 }
             }
         }
@@ -69,7 +70,7 @@ export default class Room1 extends Component {
         }
         return (
             <div>
-                
+                gg
             </div>
         )
     }
