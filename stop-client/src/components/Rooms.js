@@ -5,6 +5,9 @@ import {Redirect, Link} from 'react-router-dom';
 export default class Rooms extends Component {
     constructor(props){
         super(props)
+        this.state = {
+            existingRooms: []
+        }
 
     }
 
@@ -38,9 +41,19 @@ export default class Rooms extends Component {
             this.props.socket.emit('leave room', {username: sessionStorage.getItem('username'), room: sessionStorage.getItem('room'), id:sessionStorage.getItem('id')});
             sessionStorage.setItem('room', null)
         }
+
+        //On mount requests list of rooms from server.
+        this.props.socket.emit('request list of rooms')
+        //Updates state with list of rooms.
+        this.props.socket.on('list of rooms', (existingRooms) => {
+            this.setState({
+                'existingRooms': existingRooms 
+            })
+        })
     }
 
     render(){
+        console.log(this.state.existingRooms)
         //Checks if user is logged in in sessionStorage
         if (sessionStorage.getItem('username') == null){
             return (<Redirect to='/' />)
@@ -49,7 +62,9 @@ export default class Rooms extends Component {
             <div>
                 <ul>
                     <li><Link to='/rooms/Room1'>Room1</Link></li>
-                    <li><Link to='/rooms/Room2'>Room2</Link></li>
+                    {this.state.existingRooms.map((roomObject, index) => (
+                    <li key={roomObject.roomName}><Link to={`/rooms/${roomObject.roomName}`}>{roomObject.roomName}</Link></li>
+                        ))}
                 </ul>
             </div>
         )

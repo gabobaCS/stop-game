@@ -37,6 +37,10 @@ export default class CreateRoom extends Component {
             this.props.socket.emit('leave room', {username: sessionStorage.getItem('username'), room: sessionStorage.getItem('room'), id:sessionStorage.getItem('id')});
             sessionStorage.setItem('room', null)
         }
+        //Redirects on room created succesfully.
+        this.props.socket.on('room created succesfully', () => {
+            this.props.history.push('/rooms');
+        })
         //Handles invalid room name.
         this.props.socket.on('invalid room', () => {
             alert('Room name is already in use');
