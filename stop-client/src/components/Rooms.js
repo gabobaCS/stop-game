@@ -12,13 +12,6 @@ export default class Rooms extends Component {
     }
 
     componentDidMount(){
-        //Handles user getting into the route directly by comparing Socket ID.
-        if (sessionStorage.getItem('id') == this.props.socket.id){
-            console.log('same session')
-        }
-        else{
-            console.log('not same session')
-        }
         //Attemps user login if there's a sessionStorage active but it has refreshed the page or accessed it directly.
         if (sessionStorage.getItem('username') != null && sessionStorage.getItem('id') != this.props.socket.id){
             console.log('theres a username but not redirected')

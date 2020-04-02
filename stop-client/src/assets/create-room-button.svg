@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="401" height="418" viewBox="0 0 401 418">
+  <defs>
+    <style>
+      .cls-1, .cls-3 {
+        fill: #89482c;
+      }
+
+      .cls-2 {
+        stroke: #bc6a47;
+        stroke-width: 5px;
+        fill: url(#linear-gradient);
+      }
+
+      .cls-3 {
+        font-size: 55px;
+        font-family: MikadoUltra, Mikado;
+        letter-spacing: 0.01em;
+      }
+
+      .cls-4 {
+        stroke: none;
+      }
+
+      .cls-5 {
+        fill: none;
+      }
+
+      .cls-6 {
+        filter: url(#Create_Room);
+      }
+
+      .cls-7 {
+        filter: url(#Rectangle_25);
+      }
+    </style>
+    <filter id="Rectangle_25" x="0" y="0" width="401" height="418" filterUnits="userSpaceOnUse">
+      <feOffset dx="4" dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-opacity="0.549"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff892"/>
+      <stop offset="1" stop-color="#fe0"/>
+    </linearGradient>
+    <filter id="Create_Room" x="26" y="275" width="344" height="92" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur-2"/>
+      <feFlood flood-color="#262626" flood-opacity="0"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Create_Room_2.0" data-name="Create Room 2.0" transform="translate(8 8)">
+    <g id="Join_Room_2.0" data-name="Join Room 2.0">
+      <g class="cls-7" transform="matrix(1, 0, 0, 1, -8, -8)">
+        <rect id="Rectangle_25-2" data-name="Rectangle 25" class="cls-1" width="377" height="394" rx="20" transform="translate(8 8)"/>
+      </g>
+      <g id="Rectangle_26" data-name="Rectangle 26" class="cls-2" transform="translate(12 12)">
+        <rect class="cls-4" width="354" height="354" rx="20"/>
+        <rect class="cls-5" x="2.5" y="2.5" width="349" height="349" rx="17.5"/>
+      </g>
+      <g class="cls-6" transform="matrix(1, 0, 0, 1, -8, -8)">
+        <text id="Create_Room-2" data-name="Create Room" class="cls-3" transform="translate(35 336)"><tspan x="0" y="0">Create Room</tspan></text>
+      </g>
+    </g>
+    <path id="user-plus-solid" class="cls-1" d="M224.582,74.861H201.548V51.827a5.775,5.775,0,0,0-5.758-5.758H184.272a5.775,5.775,0,0,0-5.759,5.758V74.861H155.48a5.775,5.775,0,0,0-5.758,5.759V92.136a5.775,5.775,0,0,0,5.758,5.758h23.034v23.034a5.775,5.775,0,0,0,5.759,5.758h11.517a5.775,5.775,0,0,0,5.758-5.758V97.895h23.034a5.775,5.775,0,0,0,5.758-5.758V80.619A5.775,5.775,0,0,0,224.582,74.861ZM80.619,92.136A46.068,46.068,0,1,0,34.551,46.068,46.065,46.065,0,0,0,80.619,92.136Zm32.248,11.517h-6.01a62.651,62.651,0,0,1-52.474,0h-6.01A48.384,48.384,0,0,0,0,152.024V167a17.28,17.28,0,0,0,17.276,17.276H143.963A17.28,17.28,0,0,0,161.238,167V152.024A48.384,48.384,0,0,0,112.867,103.653Z" transform="translate(96 64.295)"/>
+  </g>
+</svg>

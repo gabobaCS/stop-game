@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'Mikado Ultra';
+    src: url('./assets/fonts/Mikado_Ultra.otf') format('opentype');
+
+}
+body{
+    background-color: #FF4646;
+    background-image: url(./assets/letter-grid-background.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#app-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+}
+#canvas{
+    height: 48em;
+    width: 70em;
+    background-color: #FF6565;
+    border-radius: 7px;
+    -webkit-box-shadow: 10px 10px 6px 0px rgba(0,0,0,0.22);
+    -moz-box-shadow: 10px 10px 6px 0px rgba(0,0,0,0.22);
+    box-shadow: 10px 10px 6px 0px rgba(0,0,0,0.22);
+}

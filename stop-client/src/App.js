@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import './App.css'
 import Login from './components/Login.js';
 import Rooms from './components/Rooms.js';
 import Room from './components/Room.js';
+import Home from './components/home/Home.js'
 import CreateRoom from './components/CreateRoom.js'
 import socketIOClient from "socket.io-client";
 import {
@@ -25,30 +27,37 @@ export default class App extends Component {
                 socket: socketIOClient(this.state.endpoint) 
             });
             console.log('established connection')
-        } 
+        }
+        console.log('On App componentDidMount') 
     }
     render() {
         //Renders only if socket connection has been established
         if (this.state.socket != ''){
             return (
-                <Router>               
-                    <Route
-                    exact path='/'
-                    render={(props) => <Login {...props} socket={this.state.socket} />}
-                    />    
-                    <Route
-                    exact path='/rooms'
-                    render={(props) => <Rooms {...props} socket={this.state.socket} />}
-                    />
-                    <Route
-                    exact path='/rooms/:roomName'
-                    render={(props) => <Room {...props} socket={this.state.socket} />}
-                    />
-                    <Route
-                    exact path='/create-room'
-                    render={(props) => <CreateRoom {...props} socket={this.state.socket} />}
-                    />                   
-                </Router>
+                <div id='app-container'>
+                    <div id='canvas'>
+                        <Router>               
+                            <Route
+                            exact path='/'
+                            render={(props) => <Login {...props} socket={this.state.socket} />}
+                            />    
+                            <Route
+                            exact path='/rooms'
+                            render={(props) => <Rooms {...props} socket={this.state.socket} />}
+                            />
+                            <Route
+                            exact path='/rooms/:roomName'
+                            render={(props) => <Room {...props} socket={this.state.socket} />}
+                            />
+                            <Route
+                            exact path='/create-room'
+                            render={(props) => <CreateRoom {...props} socket={this.state.socket} />}
+                            /> 
+                            <Route exact path='/home'><Home /></Route>                   
+                        </Router>
+                    </div>
+                </div>
+
             )
         }
         return (<h3>Loading...</h3>)

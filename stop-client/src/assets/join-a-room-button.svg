@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="401" height="418" viewBox="0 0 401 418">
+  <defs>
+    <style>
+      .cls-1, .cls-3 {
+        fill: #89482c;
+      }
+
+      .cls-2 {
+        stroke: #bc6a47;
+        stroke-width: 5px;
+        fill: url(#linear-gradient);
+      }
+
+      .cls-3 {
+        font-size: 55px;
+        font-family: MikadoUltra, Mikado;
+        letter-spacing: 0.01em;
+      }
+
+      .cls-4 {
+        stroke: none;
+      }
+
+      .cls-5 {
+        fill: none;
+      }
+
+      .cls-6 {
+        filter: url(#Join_a_Room);
+      }
+
+      .cls-7 {
+        filter: url(#Rectangle_25);
+      }
+    </style>
+    <filter id="Rectangle_25" x="0" y="0" width="401" height="418" filterUnits="userSpaceOnUse">
+      <feOffset dx="4" dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-opacity="0.549"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff892"/>
+      <stop offset="1" stop-color="#fe0"/>
+    </linearGradient>
+    <filter id="Join_a_Room" x="42" y="280" width="324" height="92" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur-2"/>
+      <feFlood flood-color="#262626" flood-opacity="0"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Join_Room_2.0" data-name="Join Room 2.0" transform="translate(8 8)">
+    <g class="cls-7" transform="matrix(1, 0, 0, 1, -8, -8)">
+      <rect id="Rectangle_25-2" data-name="Rectangle 25" class="cls-1" width="377" height="394" rx="20" transform="translate(8 8)"/>
+    </g>
+    <g id="Rectangle_26" data-name="Rectangle 26" class="cls-2" transform="translate(12 12)">
+      <rect class="cls-4" width="354" height="354" rx="20"/>
+      <rect class="cls-5" x="2.5" y="2.5" width="349" height="349" rx="17.5"/>
+    </g>
+    <path id="user-friends-solid" class="cls-1" d="M77.537,122.46a45.23,45.23,0,1,0-45.23-45.23A45.207,45.207,0,0,0,77.537,122.46Zm31.015,12.923H105.2a62.447,62.447,0,0,1-55.326,0H46.522A46.534,46.534,0,0,0,0,181.9v11.631a19.389,19.389,0,0,0,19.384,19.384H135.69a19.389,19.389,0,0,0,19.384-19.384V181.9A46.534,46.534,0,0,0,108.552,135.383Zm85.291-12.923a38.768,38.768,0,1,0-38.768-38.768A38.778,38.778,0,0,0,193.842,122.46Zm19.384,12.923h-1.535a50.925,50.925,0,0,1-35.7,0h-1.535a44.854,44.854,0,0,0-22.494,6.219A59.1,59.1,0,0,1,168,181.9v15.507c0,.888-.2,1.736-.242,2.585h71.318a19.389,19.389,0,0,0,19.384-19.384A45.207,45.207,0,0,0,213.227,135.383Z" transform="translate(67 40)"/>
+    <g class="cls-6" transform="matrix(1, 0, 0, 1, -8, -8)">
+      <text id="Join_a_Room-2" data-name="Join a Room" class="cls-3" transform="translate(52 341)"><tspan x="0" y="0">Join a Room</tspan></text>
+    </g>
+  </g>
+</svg>
