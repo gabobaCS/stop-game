@@ -2,8 +2,9 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
-let connectedUsers = [{username:'ddd', room: null, id: 'ARBITRARYID'}, {username:'gabo', room: null, id: 'ARBITRARYID1'}]; //List of objects: [{username, id, room}]
-let existingRooms = [{roomName: 'Test', categories: ['food', 'country'], inputType: 'pen-and-paper', usersInRoom: []}]
+// let connectedUsers = [{ username: 'ddd', room: null, id: 'ARBITRARYID' }, { username: 'gabo', room: null, id: 'ARBITRARYID1' }]; //List of objects: [{username, id, room}]
+let connectedUsers = []
+let existingRooms = [{ roomName: 'Test', categories: ['food', 'country'], inputType: 'pen-and-paper', usersInRoom: [] }]
 
 function userInConnectedUsers(user, connectedUsersList) {
   var i;
@@ -15,17 +16,17 @@ function userInConnectedUsers(user, connectedUsersList) {
   return false;
 }
 
-function stringInListOfObjects(str, listOfObjects, property){
+function stringInListOfObjects(str, listOfObjects, property) {
   var i;
-  for (i = 0; i < listOfObjects.length; i++){
-    if (listOfObjects[i][property] == str){
+  for (i = 0; i < listOfObjects.length; i++) {
+    if (listOfObjects[i][property] == str) {
       return true;
     }
   }
   return false;
 }
 
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
   console.log('Current connected users: ')
   console.log(connectedUsers)
   console.log('user connected: ' + socket.id)
@@ -33,13 +34,13 @@ io.on('connection', function(socket){
   socket.on('try login', (username) => {
     console.log(username + ' is trying to log in')
     //Checks if username is already in list of connected users.
-    if (userInConnectedUsers(username, connectedUsers)){
+    if (userInConnectedUsers(username, connectedUsers)) {
       console.log('Access denied')
       socket.emit('username already in use')
     }
     else {
       //Connects user and adds it to list.
-      connectedUsers.push({'username':username, 'room': null, 'id':socket.id})
+      connectedUsers.push({ 'username': username, 'room': null, 'id': socket.id })
       console.log(username + ' has logged in')
       //Informs client that login was successful
       socket.emit('succesful login', username)
@@ -50,13 +51,13 @@ io.on('connection', function(socket){
 
   socket.on('create room', (roomObject) => {
     //Checks if room is already created in existingRooms.
-    if (!stringInListOfObjects(roomObject.roomName, existingRooms, 'roomName')){
+    if (!stringInListOfObjects(roomObject.roomName, existingRooms, 'roomName')) {
       existingRooms.push(roomObject);
       socket.emit('room created succesfully')
       //Sends info to all connections to update /rooms route.
       io.sockets.emit('list of rooms', existingRooms)
     }
-    else{
+    else {
       socket.emit('invalid room')
     }
     console.log('Existing rooms:')
@@ -67,7 +68,7 @@ io.on('connection', function(socket){
     console.log(socket.id)
     socket.emit('list of rooms', existingRooms)
     // socket.removeAllListeners('request list of rooms')
-    
+
   })
 
   socket.on('join room', (userObject) => {
@@ -76,7 +77,7 @@ io.on('connection', function(socket){
     for (i = 0; i < connectedUsers.length; i++) {
       if (connectedUsers[i].username == userObject.username) {
         console.log(userObject.username + ' is trying to join: ' + userObject.room)
-        if (connectedUsers[i].room != userObject.room){
+        if (connectedUsers[i].room != userObject.room) {
           socket.join(userObject.room);
           connectedUsers[i].room = userObject.room;
           console.log(userObject.username + ' has joined: ' + userObject.room);
@@ -88,7 +89,7 @@ io.on('connection', function(socket){
     }
   })
 
-  socket.on('leave room', (userObject) => {    
+  socket.on('leave room', (userObject) => {
     let i;
     for (i = 0; i < connectedUsers.length; i++) {
       if (connectedUsers[i].username == userObject.username) {
@@ -102,9 +103,19 @@ io.on('connection', function(socket){
     console.log(connectedUsers)
   })
 
+  //listen for the client asking for the user
+  socket.on('connected users', (userObject) => {
+    //Send list of usernames in room to the client
+    let userNameList = [];
+    for (let i = 0; i < connectedUsers.length; i++) {
+      if (connectedUsers[i].room == userObject.room && connectedUsers.indexOf(userObject.username) < 0 ) {
+        userNameList.push(connectedUsers[i].username)
+      }
+    }
+    io.sockets.in(userObject.room).emit('users in room', userNameList)
+  });
 
-
-  socket.on('disconnect', function(){
+  socket.on('disconnect', function () {
     //Remove user from connectedUsers List
     let i;
     for (i = 0; i < connectedUsers.length; i++) {
@@ -118,9 +129,10 @@ io.on('connection', function(socket){
     console.log(connectedUsers)
   });
 
+
 });
 
-http.listen(4000, function(){
+http.listen(4000, function () {
   console.log('listening on *:4000');
 });
 
