@@ -91,23 +91,27 @@ export default class CreateRoom extends Component {
         }
         //TODO ADD AND DELETE MULTIPLE CATEGORIES
         return (
-            <div className='create-room-wrapper'>
-                <form id="create-room" onSubmit={this.handleSubmit}>
-                    <label htmlFor="room-name">Room name:</label><br/>
-                    <input type="text" id="room-name" name="room-name" value={this.state.roomName} onChange={this.handleChange} /><br/>
-                    
-                    <label htmlFor="add-category">Add a category:</label><br/>
-                    <input type="text" id="add-category" name="add-category"  value={this.state.category} onChange={this.handleChange}/><br/>
-                    
-                    <label htmlFor="input-type">Input type:</label><br/>
-                    <input type="radio" id="pen-and-paper" name="input-type" value="pen-and-paper" checked={this.state.inputType === 'pen-and-paper'} onChange={this.handleChange}/>
-                    <label htmlFor="pen-and-paper">Pen & Paper</label><br/>
-                    <input type="radio" id="typed" name="input-type" value="typed" checked={this.state.inputType === 'typed'} onChange={this.handleChange}/>
-                    <label htmlFor="typed">Typed</label><br/>
-                    <input type="submit" value="Create Room" />
-                </form>
+            <React.Fragment>
+                <div className='canvas-wrapper'>
+                    <h2 className='title'>Create Room</h2> 
+                    <form id="create-room-form" onSubmit={this.handleSubmit}>
+                        <label htmlFor="room-name">Room name:</label><br/>
+                        <input type="text" id="room-name" name="room-name" value={this.state.roomName} onChange={this.handleChange} /><br/>
+                        
+                        <label htmlFor="add-category">Add a category:</label><br/>
+                        <input type="text" id="add-category" name="add-category"  value={this.state.category} onChange={this.handleChange}/><br/>
+                        
+                        <label htmlFor="input-type">Input type:</label><br/>
+                        <input type="radio" id="pen-and-paper" name="input-type" value="pen-and-paper" checked={this.state.inputType === 'pen-and-paper'} onChange={this.handleChange}/>
+                        <label htmlFor="pen-and-paper">Pen & Paper</label><br/>
+                        <input type="radio" id="typed" name="input-type" value="typed" checked={this.state.inputType === 'typed'} onChange={this.handleChange}/>
+                        <label htmlFor="typed">Typed</label><br/>
+                        <input type="submit" value="Create Room" />
+                    </form>
+                </div>
+           
 
-            </div>
+            </React.Fragment>
         )
     }
 }

@@ -4,7 +4,7 @@ import Login from './components/Login.js';
 import Rooms from './components/Rooms.js';
 import Room from './components/Room.js';
 import Home from './components/home/Home.js'
-import CreateRoom from './components/CreateRoom.js'
+import CreateRoom from './components/create-room/CreateRoom.js'
 import socketIOClient from "socket.io-client";
 import {
     BrowserRouter as Router,
@@ -39,7 +39,7 @@ export default class App extends Component {
                         <Router>               
                             <Route
                             exact path='/'
-                            render={(props) => <Login {...props} socket={this.state.socket} />}
+                            render={(props) => <Home {...props} socket={this.state.socket} />}
                             />    
                             <Route
                             exact path='/rooms'
@@ -52,8 +52,7 @@ export default class App extends Component {
                             <Route
                             exact path='/create-room'
                             render={(props) => <CreateRoom {...props} socket={this.state.socket} />}
-                            /> 
-                            <Route exact path='/home'><Home /></Route>                   
+                            />           
                         </Router>
                     </div>
                 </div>
