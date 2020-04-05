@@ -1,0 +1,26 @@
+.radio-button{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.radio-button label{
+    cursor: pointer;
+}
+.radio-button input[type="radio"]{
+    position: absolute;
+    opacity: 0;
+    display: none;
+}
+.button{
+    height: 35px;
+    width: 35px;
+    margin-right: 10px;
+    border-radius: 5px;
+    background: rgb(255,255,255);
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,238,0,1) 100%);
+    border: 1px solid;
+}
+.button:hover{
+    background-color: red;
+}
+

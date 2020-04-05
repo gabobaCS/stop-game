@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import './CreateRoom.css'
+import RadioButton from './RadioButton.js';
+import Cross from '../Cross.js'
 
 export default class CreateRoom extends Component {
     constructor(props){
         super(props)
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClick = this.handleClick.bind(this);
         this.state = {
             roomName: '',
             category: '',
@@ -60,14 +63,6 @@ export default class CreateRoom extends Component {
                     category: event.target.value
                 })
                 break;
-            case 'pen-and-paper':
-            case 'typed':
-                this.setState({
-                    inputType: event.target.value
-                })
-                break;
-            default: 
-                break;
         }
     }
 
@@ -79,8 +74,12 @@ export default class CreateRoom extends Component {
         else{
             this.props.socket.emit('create room', {roomName: this.state.roomName, categories: [this.state.category], inputType: this.state.inputType, usersInRoom: []});
         }
+    }
 
-
+    handleClick(input){
+        this.setState({
+            inputType: input
+        })
     }
 
 
@@ -93,24 +92,36 @@ export default class CreateRoom extends Component {
         return (
             <React.Fragment>
                 <div className='canvas-wrapper'>
-                    <h2 className='title'>Create Room</h2> 
+                    <h2 className='title'>Create Room</h2>
+                    <Cross />
                     <form id="create-room-form" onSubmit={this.handleSubmit}>
-                        <label htmlFor="room-name">Room name:</label><br/>
-                        <input type="text" id="room-name" name="room-name" value={this.state.roomName} onChange={this.handleChange} /><br/>
+                        <div className='room-name'>
+                            <label htmlFor="room-name" className='high-level-label'>Room name:</label><br/>
+                            <input type="text" id="room-name" name="room-name" value={this.state.roomName} onChange={this.handleChange} /><br/>
+                        </div>                       
                         
-                        <label htmlFor="add-category">Add a category:</label><br/>
-                        <input type="text" id="add-category" name="add-category"  value={this.state.category} onChange={this.handleChange}/><br/>
-                        
-                        <label htmlFor="input-type">Input type:</label><br/>
-                        <input type="radio" id="pen-and-paper" name="input-type" value="pen-and-paper" checked={this.state.inputType === 'pen-and-paper'} onChange={this.handleChange}/>
-                        <label htmlFor="pen-and-paper">Pen & Paper</label><br/>
-                        <input type="radio" id="typed" name="input-type" value="typed" checked={this.state.inputType === 'typed'} onChange={this.handleChange}/>
-                        <label htmlFor="typed">Typed</label><br/>
-                        <input type="submit" value="Create Room" />
-                    </form>
-                </div>
-           
+                        <div className='create-room-flex'>
+                            <div className='add-category'>
+                                <label className='high-level-label' htmlFor="add-category">Add a category:</label><br/>
+                                <div className='add-category-input'>
+                                    <input className='add-category-text' type="text" id="add-category" name="add-category"  value={this.state.category} onChange={this.handleChange}/>
+                                    <span className='add-category-button'>+</span>
+                                </div>                             
+                            </div>
+                            <div className='spacer'/>
+                            <div>
+                                <label id='input-type-label' className='high-level-label' htmlFor="input-type">Input type:
+                                </label><br/>
+                                <div onClick={()=>this.handleClick('pen-and-paper')}><RadioButton isChecked={(this.state.inputType == 'pen-and-paper' ? true : false)} text='PEN & PAPER'/></div>
+                                <div onClick={()=>this.handleClick('typed')}><RadioButton isChecked={(this.state.inputType == 'typed' ? true : false)} text='TYPED'/></div>
+                            </div>
+                        </div>
+                        <div className='button-holder'>
+                            <input className='submit-button create-room-button' type="submit" value="Create" />
+                        </div>
 
+                    </form>
+                </div>          
             </React.Fragment>
         )
     }

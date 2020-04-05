@@ -1,8 +1,6 @@
-.create-room-wrapper{
-    margin: 2em;
-}
 .canvas-wrapper{
     padding: 50px 90px;
+    position: relative;
 }
 .title{
     margin: 0;
@@ -11,6 +9,70 @@
     text-align: center;
     text-shadow: 6px 6px 10px black;
 }
-input[type="text"]{
+
+#create-room-form{
+    margin-top: 10px;
+}
+#create-room-form label{
+    font-size: 40px;
+    color: white;
+    text-shadow: 6px 6px 6px rgb(0, 0, 0, 0.8);
+}
+#create-room-form input[type="text"]{
     font-family: 'Mikado Ultra';
+    color: white;
+    font-size: 40px;
+    text-shadow: 4px 4px 4px rgb(0, 0, 0, 0.6);
+    background-color: rgb(255, 255, 255, 0.30);
+    border: none;
+    width: 100%;
+    padding-left: 10px;
+}
+.room-name{
+    margin-bottom: 40px;
+}
+.create-room-flex{
+    display: flex;
+}
+.high-level-label{
+    margin-bottom: 15px;
+    display: inline-block;
+}
+.add-category{
+    width: 50%;
+}
+.add-category-input{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.add-category-button{
+    font-size: 60px;
+    position: absolute;
+    padding-right: 10px;
+    padding-bottom: 3px;
+    float: right;
+    color: white;
+    text-shadow: 3px 3px 3px black;
+}
+.add-category-button:hover{
+    cursor: pointer;
+}
+.spacer{
+    width: 90px;
+}
+#input-type-label{
+    margin-bottom: 8px;
+}
+.button-holder{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.create-room-button{
+    padding: 0 50px;
+    margin-top: 100px ;
 }

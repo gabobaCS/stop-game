@@ -8,6 +8,7 @@ body{
     background-image: url(./assets/letter-grid-background.svg);
     background-repeat: no-repeat;
     background-size: cover;
+    font-family: 'Mikado Ultra', sans-serif;
 }
 #app-container{
     display: flex;
