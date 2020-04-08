@@ -10,10 +10,15 @@
     right: 30px;
     top: 30px;
     border-radius: 5px;
-    border: 2px solid rgb(255, 16, 16)
+    border: 2px solid rgb(255, 16, 16);
+    transition: all .01s ease-in-out; 
 }
 .close-button:hover{
     cursor: pointer;
+    background: rgb(255, 0, 0);
+    border: 2px solid rgb(160, 2, 2);
+    background: linear-gradient(180deg, rgba(255,0,0,1) 0%,rgb(255, 52, 52) 100%);
+    transform: scale(1.02);
 }
 .cross-svg{
     position: relative;

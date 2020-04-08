@@ -10,9 +10,12 @@ export default class CreateRoom extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleAddCategory = this.handleAddCategory.bind(this);
+        this.formatCategories = this.formatCategories.bind(this);
         this.state = {
             roomName: '',
             category: '',
+            categoriesList: [],
             inputType: ''
         }
     }
@@ -54,14 +57,20 @@ export default class CreateRoom extends Component {
         //Passes html form to component's state
         switch(event.target.id){
             case 'room-name':
-                this.setState({
-                    roomName: event.target.value
-                })
+                let noSpaceRoomName = event.target.value.replace(/\s/g, "");
+                if (noSpaceRoomName.length < 24){
+                    this.setState({
+                        roomName: noSpaceRoomName.toUpperCase()
+                    })
+                }
                 break
             case 'add-category':
-                this.setState({
-                    category: event.target.value
-                })
+                let noSpaceCategory = event.target.value.replace(/\s/g, "");
+                if (noSpaceCategory.length < 16){
+                    this.setState({
+                        category: noSpaceCategory.toUpperCase()
+                    })
+                }
                 break;
         }
     }
@@ -77,10 +86,53 @@ export default class CreateRoom extends Component {
     }
 
     handleClick(input){
+        console.log(input)
         this.setState({
             inputType: input
         })
     }
+
+    handleAddCategory(){
+        if (this.state.category != ''){
+            if (!this.state.categoriesList.includes(this.state.category)){
+                this.setState({
+                    categoriesList: this.state.categoriesList.concat([this.state.category]),
+                    category: ''
+                })
+            }
+
+        }
+    }
+
+    formatCategories(categoriesArray){
+        //Formats list of string to dynamic JSX. It lists 3 item per row, unless the items would cause x-overflow.
+        let formattedList = [];
+        let buffer = [];
+        let letterCounter = 0;
+        for (let i = 0; i < categoriesArray.length; i++){
+            if (letterCounter + categoriesArray[i].length > 19){
+                formattedList.push(<ul  key={categoriesArray[i]} className='categories-list-form'>{buffer}</ul>);
+                buffer = [<li onClick={() => this.handleClick(categoriesArray[i])} key={categoriesArray[i]}>{categoriesArray[i]}</li>];
+                letterCounter = categoriesArray[i].length;
+            }
+            else{
+                buffer.push(<li onClick={() => this.handleClick(categoriesArray[i])} key={categoriesArray[i]}>{categoriesArray[i]}</li>);
+                letterCounter += categoriesArray[i].length;
+            }
+            
+            if (buffer.length == 3){
+                formattedList.push(<ul key={categoriesArray[i]} className='categories-list-form'>{buffer}</ul>);
+                letterCounter = 0;
+                buffer = [];
+            }
+        }
+        if (buffer.length != 0){
+            formattedList.push(<ul key='randomKEY' className='categories-list-form'>{buffer}</ul>)
+        }
+        return formattedList
+    }
+
+
 
 
     render() {
@@ -88,12 +140,15 @@ export default class CreateRoom extends Component {
         if (sessionStorage.getItem('username') == null){
             return (<Redirect to='/' />)
         }
-        //TODO ADD AND DELETE MULTIPLE CATEGORIES
+
         return (
             <React.Fragment>
                 <div className='canvas-wrapper'>
                     <h2 className='title'>Create Room</h2>
-                    <Cross />
+                    <div onClick={() => this.props.history.push('/')}>
+                        <Cross />
+                    </div>
+
                     <form id="create-room-form" onSubmit={this.handleSubmit}>
                         <div className='room-name'>
                             <label htmlFor="room-name" className='high-level-label'>Room name:</label><br/>
@@ -105,8 +160,13 @@ export default class CreateRoom extends Component {
                                 <label className='high-level-label' htmlFor="add-category">Add a category:</label><br/>
                                 <div className='add-category-input'>
                                     <input className='add-category-text' type="text" id="add-category" name="add-category"  value={this.state.category} onChange={this.handleChange}/>
-                                    <span className='add-category-button'>+</span>
-                                </div>                             
+                                    <span onClick={this.handleAddCategory} className='add-category-button'>+</span>
+                                </div> 
+
+                                <div className='categories-list-wrapper'>
+                                    {this.formatCategories(this.state.categoriesList)}
+                                </div>        
+
                             </div>
                             <div className='spacer'/>
                             <div>
@@ -116,8 +176,9 @@ export default class CreateRoom extends Component {
                                 <div onClick={()=>this.handleClick('typed')}><RadioButton isChecked={(this.state.inputType == 'typed' ? true : false)} text='TYPED'/></div>
                             </div>
                         </div>
+
                         <div className='button-holder'>
-                            <input className='submit-button create-room-button' type="submit" value="Create" />
+                            <input id='create-room-button' className='submit-button' type="submit" value="Create" />
                         </div>
 
                     </form>

@@ -72,7 +72,71 @@
     justify-content: center;
 }
 
-.create-room-button{
+#create-room-button{
     padding: 0 50px;
-    margin-top: 100px ;
+    margin-top: 0;
+
 }
+
+.categories-list-wrapper{
+    height: 120px;
+    margin: 10px 0;
+    overflow-y: auto;
+
+}
+.categories-list-form{
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: center;
+    margin: 0;
+}
+.categories-list-form li, .categories-list-form div {
+    color: white;
+    text-shadow: 4px 4px 4px rgb(0, 0, 0, 0.6);
+    font-size: 30px;
+    padding: 0 10px;
+    text-align: center;
+    cursor: pointer;
+}
+.categories-list-form li:hover {
+    color: rgb(255, 170, 170);
+}
+
+/*Custom Scrollbar*/
+
+
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ffc4c4;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
+::-webkit-scrollbar-thumb:active {
+  background: #ff8080;
+}
+::-webkit-scrollbar-track {
+  background: #ff5252;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-track:hover {
+  background: #fF5252;
+}
+::-webkit-scrollbar-track:active {
+  background: #ff5252;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
