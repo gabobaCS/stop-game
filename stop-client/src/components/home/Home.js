@@ -34,6 +34,17 @@ export default class Home extends Component {
                 isUserLoggedIn: true
             })
         })
+
+        //Automatically unjoins user from any room on reaching page, after checking that user is connected.
+        if (sessionStorage.getItem('username') != null && sessionStorage.getItem('room') != null){
+            console.log('should leave room')
+            this.props.socket.emit('leave room', {username: sessionStorage.getItem('username'), room: sessionStorage.getItem('room'), id:sessionStorage.getItem('id')});
+            //Handles duplicate messages in room by removing listener.
+            this.props.socket.removeAllListeners('succesful room join')
+            sessionStorage.setItem('room', null)
+        }
+
+        this.props.socket.removeAllListeners('invalid room')
     }
 
     handleClick(event){

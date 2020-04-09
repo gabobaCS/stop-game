@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import './CreateRoom.css'
 import RadioButton from './RadioButton.js';
-import Cross from '../Cross.js'
+import ModalDeleteCategory from './ModalDeleteCategory.js';
+import Cross from '../Cross.js';
+import WarningModal from '../WarningModal.js';
 
 export default class CreateRoom extends Component {
     constructor(props){
@@ -12,11 +14,17 @@ export default class CreateRoom extends Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleAddCategory = this.handleAddCategory.bind(this);
         this.formatCategories = this.formatCategories.bind(this);
+        this.handleDeleteCategory = this.handleDeleteCategory.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleWarningModal = this.handleWarningModal.bind(this);
         this.state = {
             roomName: '',
             category: '',
             categoriesList: [],
-            inputType: ''
+            inputType: '',
+            displayModal: false,
+            displayWarningModal: {'display': false, 'message': ''},
+            targetCategory: ''
         }
     }
 
@@ -40,16 +48,23 @@ export default class CreateRoom extends Component {
         })        
         //Automatically unjoins user from any room on reaching page, after checking that user is connected.
         if (sessionStorage.getItem('username') != null && sessionStorage.getItem('room') != null){
+            console.log('should leave room')
             this.props.socket.emit('leave room', {username: sessionStorage.getItem('username'), room: sessionStorage.getItem('room'), id:sessionStorage.getItem('id')});
+            //Handles duplicate messages in room by removing listener.
+            this.props.socket.removeAllListeners('succesful room join')
             sessionStorage.setItem('room', null)
         }
+
+        
         //Redirects on room created succesfully.
         this.props.socket.on('room created succesfully', () => {
             this.props.history.push('/rooms');
         })
         //Handles invalid room name.
         this.props.socket.on('invalid room', () => {
-            alert('Room name is already in use');
+            this.setState({
+                displayWarningModal: {display: true, message: 'Room name taken'}
+            })
         })
     }
 
@@ -77,8 +92,11 @@ export default class CreateRoom extends Component {
 
     handleSubmit(event){
         event.preventDefault()
-        if (this.state.roomName == '' || this.state.category == '' || this.state.inputType == ''){
-            alert('Please input valid information')
+        //Handles invalid input.
+        if (this.state.roomName == '' || this.state.categoriesList.length == 0 || this.state.inputType == ''){
+            this.setState({
+                displayWarningModal: {display: true, message: 'Please fill all fields'}
+            })
         }
         else{
             this.props.socket.emit('create room', {roomName: this.state.roomName, categories: [this.state.category], inputType: this.state.inputType, usersInRoom: []});
@@ -100,6 +118,11 @@ export default class CreateRoom extends Component {
                     category: ''
                 })
             }
+            else{
+                this.setState({
+                    displayWarningModal: {'display': true, 'message':'Category already added'}
+                })
+            }
 
         }
     }
@@ -112,11 +135,11 @@ export default class CreateRoom extends Component {
         for (let i = 0; i < categoriesArray.length; i++){
             if (letterCounter + categoriesArray[i].length > 19){
                 formattedList.push(<ul  key={categoriesArray[i]} className='categories-list-form'>{buffer}</ul>);
-                buffer = [<li onClick={() => this.handleClick(categoriesArray[i])} key={categoriesArray[i]}>{categoriesArray[i]}</li>];
+                buffer = [<li onClick={() => this.handleDeleteCategory('open-modal', categoriesArray[i])} key={categoriesArray[i]}>{categoriesArray[i]}</li>];
                 letterCounter = categoriesArray[i].length;
             }
             else{
-                buffer.push(<li onClick={() => this.handleClick(categoriesArray[i])} key={categoriesArray[i]}>{categoriesArray[i]}</li>);
+                buffer.push(<li onClick={() => this.handleDeleteCategory('open-modal', categoriesArray[i])} key={categoriesArray[i]}>{categoriesArray[i]}</li>);
                 letterCounter += categoriesArray[i].length;
             }
             
@@ -132,6 +155,43 @@ export default class CreateRoom extends Component {
         return formattedList
     }
 
+    handleDeleteCategory(answer, target){
+        if (answer == 'close'){
+            this.setState({
+                displayModal: false
+            })
+        }
+        if (answer == 'delete-category'){
+            console.log(this.state.targetCategory)
+            const targetIndex = this.state.categoriesList.indexOf(this.state.targetCategory)
+            this.setState({
+                categoriesList: [...this.state.categoriesList.slice(0, targetIndex), ...this.state.categoriesList.slice(targetIndex + 1)],
+                displayModal: false
+            })
+        }
+        if (answer == 'open-modal'){
+            this.setState({
+                displayModal: true,
+                targetCategory: target
+
+            })
+        }
+    }
+
+    handleWarningModal(){
+        console.log('here')
+        this.setState({
+            displayWarningModal: {display: false, message: ''}
+        })
+    }
+    
+    handleKeyPress(event){
+        if (event.key === 'Enter'){
+            event.preventDefault();
+            this.handleAddCategory();
+        }
+    }
+
 
 
 
@@ -143,23 +203,25 @@ export default class CreateRoom extends Component {
 
         return (
             <React.Fragment>
+                <WarningModal message={this.state.displayWarningModal.message} display={this.state.displayWarningModal.display}  handleWarningModal={this.handleWarningModal.bind(this)}/>
+                <ModalDeleteCategory display={this.state.displayModal} handleDeleteCategory={this.handleDeleteCategory.bind(this)}/>
                 <div className='canvas-wrapper'>
                     <h2 className='title'>Create Room</h2>
                     <div onClick={() => this.props.history.push('/')}>
                         <Cross />
                     </div>
 
-                    <form id="create-room-form" onSubmit={this.handleSubmit}>
+                    <form id="create-room-form" onSubmit={this.handleSubmit} >
                         <div className='room-name'>
                             <label htmlFor="room-name" className='high-level-label'>Room name:</label><br/>
-                            <input type="text" id="room-name" name="room-name" value={this.state.roomName} onChange={this.handleChange} /><br/>
+                            <input type="text" id="room-name" name="room-name" value={this.state.roomName} onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }} onChange={this.handleChange} /><br/>
                         </div>                       
                         
                         <div className='create-room-flex'>
                             <div className='add-category'>
                                 <label className='high-level-label' htmlFor="add-category">Add a category:</label><br/>
                                 <div className='add-category-input'>
-                                    <input className='add-category-text' type="text" id="add-category" name="add-category"  value={this.state.category} onChange={this.handleChange}/>
+                                    <input className='add-category-text' type="text" id="add-category" name="add-category" value={this.state.category} onKeyPress={this.handleKeyPress} onChange={this.handleChange}/>
                                     <span onClick={this.handleAddCategory} className='add-category-button'>+</span>
                                 </div> 
 

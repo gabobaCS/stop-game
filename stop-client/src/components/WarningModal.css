@@ -1,0 +1,20 @@
+.ok-button{
+    padding: 0 54px;
+    border: 3px solid #EBEB00;
+    background: rgb(255,170,170);
+    background: linear-gradient(180deg, rgba(255,255,183,1) 0%, rgba(255, 255, 0,1) 100%);
+}
+.ok-button:hover{
+    background: rgb(255, 30, 30);
+    background: linear-gradient(180deg, rgba(255, 255, 0,1) 0%, rgb(255, 255, 143) 100%);
+    cursor: pointer;
+    -moz-box-shadow:    inset 0 0 3px #887f00;
+    -webkit-box-shadow: inset 0 0 3px #887f00;
+    box-shadow:         inset 0 0 3px #887f00;
+
+}
+.modal-warning-category-flex{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}

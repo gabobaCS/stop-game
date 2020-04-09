@@ -55,8 +55,8 @@ export default class ModalLogin extends Component {
         let Modalstyle = (this.props.isUserLoggedIn == false && this.state.formSubmitted == false) ? {display: ''} : {display:'none'}
         let usernameTakenStyle = (this.state.unsuccessfulLogin) ? {position: 'absolute'} : {display: 'none'}
         return (
-            <div id='modal-login' style={Modalstyle}>
-                <div className='modal-login-canvas modal-transition' >
+            <div className='modal' style={Modalstyle}>
+                <div className='modal-canvas modal-transition' >
                     <h2>Enter your username</h2>
                     <form className='modal-login-form' onSubmit={this.handleSubmit} >
                         <input type="text" value={this.state.username} onChange={this.handleChange} />
