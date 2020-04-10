@@ -73,7 +73,7 @@ export default class CreateRoom extends Component {
         switch(event.target.id){
             case 'room-name':
                 let noSpaceRoomName = event.target.value.replace(/\s/g, "");
-                if (noSpaceRoomName.length < 24){
+                if (noSpaceRoomName.length < 20){
                     this.setState({
                         roomName: noSpaceRoomName.toUpperCase()
                     })
@@ -99,7 +99,7 @@ export default class CreateRoom extends Component {
             })
         }
         else{
-            this.props.socket.emit('create room', {roomName: this.state.roomName, categories: [this.state.category], inputType: this.state.inputType, usersInRoom: []});
+            this.props.socket.emit('create room', {roomName: this.state.roomName, categories: this.state.categoriesList, inputType: this.state.inputType, usersInRoom: []});
         }
     }
 

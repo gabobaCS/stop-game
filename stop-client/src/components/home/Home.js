@@ -52,6 +52,9 @@ export default class Home extends Component {
         if (event.target.alt == 'Create Room'){
             this.props.history.push('/create-room')
         }
+        if (event.target.alt == 'Join a Room'){
+            this.props.history.push('/rooms')
+        }
     }
     render() {
         console.log(this.props.socket)
@@ -63,7 +66,7 @@ export default class Home extends Component {
                 <div id='create-room-button-wrapper'>
                     <img src={CreateRoomButtonSVG} alt="Create Room" onClick={this.handleClick} />
                         <div className='spacer'></div>
-                    <img src={JoinARoomButtonSVG} alt="Join a Room" />
+                    <img src={JoinARoomButtonSVG} alt="Join a Room" onClick={this.handleClick} />
                 </div>
             </React.Fragment>
 

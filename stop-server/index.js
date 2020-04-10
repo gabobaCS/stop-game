@@ -3,7 +3,7 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 let connectedUsers = [{username:'ddd', room: null, id: 'ARBITRARYID'}, {username:'gabo', room: null, id: 'ARBITRARYID1'}]; //List of objects: [{username, id, room}]
-let existingRooms = [{roomName: 'Test', categories: ['food', 'country'], inputType: 'pen-and-paper', usersInRoom: []}]
+let existingRooms = [{roomName: 'TEST', categories: ['food', 'country'], inputType: 'pen-and-paper', usersInRoom: ['gabriel', 'idan', 'meagan']}]
 
 function userInConnectedUsers(user, connectedUsersList) {
   var i;
@@ -51,7 +51,7 @@ io.on('connection', function(socket){
   socket.on('create room', (roomObject) => {
     //Checks if room is already created in existingRooms.
     if (!stringInListOfObjects(roomObject.roomName, existingRooms, 'roomName')){
-      existingRooms.push(roomObject);
+      existingRooms.unshift(roomObject);
       socket.emit('room created succesfully')
       //Sends info to all connections to update /rooms route.
       io.sockets.emit('list of rooms', existingRooms)

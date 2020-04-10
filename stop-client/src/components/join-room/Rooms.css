@@ -1,0 +1,67 @@
+.canvas-join-room{
+    padding: 50px 120px;
+    position: relative;
+}
+
+.room-list{
+    max-height: 462px;
+    margin-top: 20px;
+    list-style-type: none;
+    padding: 0;
+    overflow-y: auto;
+    font-size: 50px;
+    position: relative;
+    text-decoration: none;
+    cursor: pointer;
+    border-top: 1px solid rgb(255, 149, 149);;
+    border-left: 1px solid rgb(255, 149, 149);
+    border-right: 1px solid rgb(255, 149, 149);
+    border-bottom: 1px solid rgb(255, 149, 149);;
+}
+.rooms-list-item{
+    display: flex;
+    margin-left: 20px;
+    padding: 5px 0;
+}
+.room-list h2{
+    color: white;
+    text-shadow: none;
+    margin: 0;
+    text-align: left;
+}
+.room-list a{
+    text-decoration: none;
+    color:white;
+}
+.room-list li{
+    width: 100%;
+    border: none;
+  
+}
+.room-list li:nth-child(2n+1){
+    background-color: rgb(255, 149, 149);
+}
+.room-list li:nth-child(2n){
+    background-color: rgb(255, 101, 101);
+}
+.room-list li:hover{
+    z-index: 999;
+    border-bottom: 9px solid #702C2C;
+}
+.room-list li:nth-child(6):hover{
+    height: 69px;
+}
+.room-li-right{
+    right: 20px;
+    position: absolute;
+
+}
+.room-li-right h3{
+    display: inline-block;
+    font-size: 40px;
+    margin: 0 3px 0 0;
+    padding: 0;
+}
+.middle-icon{
+    margin-right: 20px;
+}

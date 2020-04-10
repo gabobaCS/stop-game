@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import {Redirect, Link} from 'react-router-dom';
-
+import Cross from '../Cross.js';
+import './Rooms.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUsers, faKeyboard, faPen } from '@fortawesome/free-solid-svg-icons'
 
 export default class Rooms extends Component {
     constructor(props){
         super(props)
+        this.formatRoomList = this.formatRoomList.bind(this)
         this.state = {
             existingRooms: []
         }
@@ -49,17 +53,39 @@ export default class Rooms extends Component {
         })
     }
 
+    formatRoomList(){
+        console.log(this.state.existingRooms)
+        let roomListJSX = this.state.existingRooms.map((roomObject, index) => (
+            <li key={roomObject.roomName}>
+                <Link style={{ textDecoration: 'none' }} to={`/rooms/${roomObject.roomName}`}>
+                    <div className='rooms-list-item'>
+                        <h2>{roomObject.roomName}</h2>
+                        <div className='room-li-right'>
+                            <h3 className=''>{roomObject.usersInRoom.length}</h3>
+                            <FontAwesomeIcon icon={faUsers} className='middle-icon' />
+                            {(roomObject.inputType == 'typed')?<FontAwesomeIcon icon={faKeyboard} style={{fontSize: '47px'}} /> :<FontAwesomeIcon icon={faPen} />}
+                        </div>
+                    </div>                   
+                </Link>
+            </li>
+        ))
+        return roomListJSX    
+    }
+
     render(){
         //Checks if user is logged in in sessionStorage
         if (sessionStorage.getItem('username') == null){
             return (<Redirect to='/' />)
         }
         return (
-            <div>
-                <ul>
-                    {this.state.existingRooms.map((roomObject, index) => (
-                        <li key={roomObject.roomName}><Link to={`/rooms/${roomObject.roomName}`}>{roomObject.roomName}</Link></li>
-                    ))}
+            <div className='canvas-join-room'>
+                <h2 className='title'>Join a Room</h2>
+                <div onClick={() => this.props.history.push('/')}>
+                        <Cross />
+                </div>
+
+                <ul className='room-list'>
+                    {this.formatRoomList()}
                 </ul>
             </div>
         )

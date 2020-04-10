@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css'
 import Login from './components/Login.js';
-import Rooms from './components/Rooms.js';
+import Rooms from './components/join-room/Rooms.js';
 import Room from './components/Room.js';
 import Home from './components/home/Home.js'
 import CreateRoom from './components/create-room/CreateRoom.js'
