@@ -1,0 +1,39 @@
+.user-data{
+    background-color: rgb(255, 117, 117);
+    height: 600px;
+    width: 260px;
+    border-radius: 7px;
+
+}
+.user-data ul{
+    list-style-type: none;
+    padding: 0 20px;
+    height: 600px;
+    overflow-y: auto;
+    margin: 0;
+}
+.user-data ul li{
+    color: white;
+    font-size: 30px;
+    white-space: initial;
+    width: 100%;
+    word-wrap: break-word;
+}
+.user-data ul li:first-child{
+    padding-top: 10px;
+}
+.user-data ul h4{
+    color: white;
+    font-size: 40px;
+    margin: 0;
+}
+.user-data ul h5{
+    color: white;
+    font-size: 20px;
+    margin: 0;
+}
+.user-data ul hr{
+    background-color: black;
+    border: 1px solid #FF6565;
+    margin: 10px 0;
+}

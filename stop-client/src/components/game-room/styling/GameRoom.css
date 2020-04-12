@@ -1,0 +1,17 @@
+.game-room-canvas{
+    padding: 10px 40px;
+}
+.room-title{
+    font-size: 70px;
+    text-align: left;
+    color: white;
+    text-shadow: black 6px 6px 10px;
+}
+.room-flex{
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+.game-room-flex-spacer{
+    width: 20px;
+}

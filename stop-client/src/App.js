@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import './App.css'
-import Login from './components/Login.js';
 import Rooms from './components/join-room/Rooms.js';
-import Room from './components/Room.js';
+import GameRoom from './components/game-room/GameRoom.js';
 import Home from './components/home/Home.js'
 import CreateRoom from './components/create-room/CreateRoom.js'
 import socketIOClient from "socket.io-client";
@@ -47,7 +46,7 @@ export default class App extends Component {
                             />
                             <Route
                             exact path='/rooms/:roomName'
-                            render={(props) => <Room {...props} socket={this.state.socket} />}
+                            render={(props) => <GameRoom {...props} socket={this.state.socket} />}
                             />
                             <Route
                             exact path='/create-room'

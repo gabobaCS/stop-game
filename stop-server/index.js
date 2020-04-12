@@ -72,8 +72,7 @@ io.on('connection', function(socket){
 
   socket.on('join room', (userObject) => {
     //Checks if user is already logged in to room
-    let i;
-    for (i = 0; i < connectedUsers.length; i++) {
+    for (let i = 0; i < connectedUsers.length; i++) {
       if (connectedUsers[i].username == userObject.username) {
         console.log(userObject.username + ' is trying to join: ' + userObject.room)
         if (connectedUsers[i].room != userObject.room){
@@ -86,11 +85,19 @@ io.on('connection', function(socket){
         }
       }
     }
+    //Adds user to room object.
+    for (let i = 0; i < existingRooms.length; i++){
+      
+      if (existingRooms[i].roomName == userObject.room){
+        existingRooms[i].usersInRoom.push(userObject.username);
+        break;
+      }
+    }
+    console.log(existingRooms)
   })
 
   socket.on('leave room', (userObject) => {    
-    let i;
-    for (i = 0; i < connectedUsers.length; i++) {
+    for (let i = 0; i < connectedUsers.length; i++) {
       if (connectedUsers[i].username == userObject.username) {
         console.log(userObject.username + ' is leaving: ' + userObject.room)
         connectedUsers[i].room = null
@@ -99,8 +106,21 @@ io.on('connection', function(socket){
         break
       }
     }
+    //Removes User from existingRooms list.
+    for (let i = 0; i < existingRooms.length; i++){
+      if (existingRooms[i].roomName == userObject.room){
+        console.log('Deleting ' + userObject.username +' from: ' + userObject.room);
+        let target = existingRooms[i].usersInRoom.indexOf(userObject.username)
+        existingRooms[i].usersInRoom.splice(target, 1)
+      }
+    }
+    console.log(existingRooms) 
     console.log(connectedUsers)
   })
+
+  /*Handling Game Room*/
+
+  
 
 
 

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="167" height="167" viewBox="0 0 167 167">
+  <defs>
+    <filter id="Path_5" x="0" y="0" width="167" height="167" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Ready_Button_Inactive_2.0" data-name="Ready Button Inactive 2.0" transform="translate(9 6)">
+    <g id="Ready_Button_Inactive_2.0-2" data-name="Ready Button Inactive 2.0">
+      <g transform="matrix(1, 0, 0, 1, -9, -6)" filter="url(#Path_5)">
+        <g id="Path_5-2" data-name="Path 5" transform="translate(9 6)" fill="rgba(255,255,255,0.48)">
+          <path d="M 103.9091720581055 145.5 L 45.09082794189453 145.5 L 3.500000476837158 103.9091720581055 L 3.50002121925354 45.09082794189453 L 45.09084701538086 3.500000476837158 L 103.9091720581055 3.50002121925354 L 145.5 45.09084701538086 L 145.5 103.9091720581055 L 103.9091720581055 145.5 Z" stroke="none"/>
+          <path d="M 46.54058074951172 7 L 7 46.54055023193359 L 7 102.4594268798828 L 46.54055023193359 142 L 102.4594421386719 142 L 142 102.4594421386719 L 142 46.54058074951172 L 102.4594421386719 7 L 46.54058074951172 7 M 43.64110565185547 0 L 105.3589172363281 0 L 149 43.64110565185547 L 149 105.3589172363281 L 105.3589172363281 149 L 43.64107513427734 149 L 0 105.3588943481445 L 0 43.64107513427734 L 43.64110565185547 0 Z" stroke="none" fill="#ff6565"/>
+        </g>
+      </g>
+    </g>
+    <text id="Ready" transform="translate(18 87.5)" fill="#ff6d6d" font-size="39" font-family="MikadoUltra, Mikado" letter-spacing="0.02em"><tspan x="0" y="0">Ready</tspan></text>
+  </g>
+</svg>
