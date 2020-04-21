@@ -7,7 +7,7 @@ export default class LetterDisplay extends Component {
         return (
             <div className='letter-square-wrapper'>
                 <div className='letter-square'>
-                    <h4 className='letter'>A</h4>              
+                    <h4 className='letter'>?</h4>              
                 </div>
             </div>
 

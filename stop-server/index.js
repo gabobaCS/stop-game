@@ -2,8 +2,8 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
-let connectedUsers = [{username:'ddd', room: null, id: 'ARBITRARYID'}, {username:'gabo', room: null, id: 'ARBITRARYID1'}]; //List of objects: [{username, id, room}]
-let existingRooms = [{roomName: 'TEST', categories: ['food', 'country'], inputType: 'pen-and-paper', usersInRoom: ['gabriel', 'idan', 'meagan']}]
+let connectedUsers = [{username:'ddd', room: null, id: 'ARBITRARYID'}, {username:'gabriel', room: 'TEST', id: 'ARBITRARYID1'}]; //List of objects: [{username, id, room}]
+let existingRooms = [{roomName: 'TEST', gameState:'lobby', categories: ['food', 'country'], inputType: 'pen-and-paper', usersInRoom: [{username:'gabriel', playerReady: true, points: 0}]}]
 
 function userInConnectedUsers(user, connectedUsersList) {
   var i;
@@ -23,6 +23,22 @@ function stringInListOfObjects(str, listOfObjects, property){
     }
   }
   return false;
+}
+
+function indexOfObjectProp(listOfObjects, property, target){
+  for (let i = 0; i < listOfObjects.length; i++){
+    if (listOfObjects[i][property] == target)
+    return i
+  }
+}
+
+function allUsersInRoomReady(listOfObjects, property){
+  for (let i = 0; i < listOfObjects.length; i++){
+    if (!listOfObjects[i][property]){
+      return false
+    }
+  }
+  return true
 }
 
 io.on('connection', function(socket){
@@ -89,7 +105,8 @@ io.on('connection', function(socket){
     for (let i = 0; i < existingRooms.length; i++){
       
       if (existingRooms[i].roomName == userObject.room){
-        existingRooms[i].usersInRoom.push(userObject.username);
+        existingRooms[i].usersInRoom.push({username:userObject.username, playerReady: false, points: 0});
+        io.to(existingRooms[i].roomName).emit('room data', existingRooms[i])
         break;
       }
     }
@@ -100,9 +117,8 @@ io.on('connection', function(socket){
     for (let i = 0; i < connectedUsers.length; i++) {
       if (connectedUsers[i].username == userObject.username) {
         console.log(userObject.username + ' is leaving: ' + userObject.room)
-        connectedUsers[i].room = null
+        connectedUsers[i].room = null;
         socket.leave(userObject.room)
-        // socket.removeAllListeners('request list of rooms')
         break
       }
     }
@@ -110,15 +126,57 @@ io.on('connection', function(socket){
     for (let i = 0; i < existingRooms.length; i++){
       if (existingRooms[i].roomName == userObject.room){
         console.log('Deleting ' + userObject.username +' from: ' + userObject.room);
-        let target = existingRooms[i].usersInRoom.indexOf(userObject.username)
-        existingRooms[i].usersInRoom.splice(target, 1)
+        let targetIndex = indexOfObjectProp(existingRooms[i].usersInRoom, 'username', userObject.username) ;
+        existingRooms[i].usersInRoom.splice(targetIndex, 1)
+        console.log('Removing from existingRooms')
+        console.log(existingRooms[i].usersInRoom);
+        io.to(userObject.room).emit('room data', existingRooms[i])
+
       }
     }
-    console.log(existingRooms) 
+    console.log(existingRooms.usersInRoom) 
     console.log(connectedUsers)
   })
 
   /*Handling Game Room*/
+    // socket.on('request usersList', (roomName) => {
+    //   //Iterates over existingRooms to send appropiate roomObject.
+    //   for (let i = 0; i < existingRooms.length; i++){
+    //     if (existingRooms[i].roomName == roomName){
+    //       io.to(roomName).emit('users in room', existingRooms[i].usersInRoom)
+    //     }
+    //   }
+    // })
+
+    //Serves room data.
+    socket.on('request room data', (roomName) => {
+      console.log('Requesting:')
+      console.log( existingRooms[indexOfObjectProp(existingRooms, 'roomName', roomName)])
+      io.to(roomName).emit('room data', existingRooms[indexOfObjectProp(existingRooms, 'roomName', roomName)]);
+    })
+
+
+    //Receives player ready action.
+    socket.on('player ready', (userObject) => {
+      console.log('here')
+      console.log(userObject)
+      let existingRoomsIndex = indexOfObjectProp(existingRooms, 'roomName', userObject.roomName);
+      let usersInRoomIndex = indexOfObjectProp(existingRooms[existingRoomsIndex].usersInRoom, 'username', userObject.username);
+      //Sets user to active playerReady state
+      existingRooms[existingRoomsIndex].usersInRoom[usersInRoomIndex].playerReady = true;
+      console.log('EXISTING ROOMS TARGET')  
+      console.log(existingRooms[existingRoomsIndex].usersInRoom[usersInRoomIndex])
+      //Emits updated users list
+      let targetRoom = existingRooms[indexOfObjectProp(existingRooms, 'roomName', userObject.roomName)]
+      io.to(userObject.roomName).emit('room data', targetRoom)
+      if(allUsersInRoomReady(targetRoom.usersInRoom, 'playerReady')){
+        console.log('ALL PLAYERS READY FROM LOBBY:' + targetRoom.roomName)
+        targetRoom.gameState = 'gameInProgress'
+        io.to(targetRoom.roomName).emit('all players ready in lobby', targetRoom)
+        
+      }
+    })
+
 
   
 
@@ -126,16 +184,32 @@ io.on('connection', function(socket){
 
   socket.on('disconnect', function(){
     //Remove user from connectedUsers List
-    let i;
+    var i;
     for (i = 0; i < connectedUsers.length; i++) {
       if (connectedUsers[i].id == socket.id) {
-        connectedUsers.splice(i, 1)
+
+        //After determing username, removes user from existingRooms.
+        for (let n = 0; n < existingRooms.length; n++){
+          if (existingRooms[n].roomName == connectedUsers[i].room){
+
+            let targetIndex = indexOfObjectProp(existingRooms[n].usersInRoom, 'username', connectedUsers[i].username) ;
+            existingRooms[n].usersInRoom.splice(targetIndex, 1)
+            console.log('Users in exising Room after disconnect:')
+            console.log(existingRooms[n].usersInRoom)
+            io.to(existingRooms[n].roomName).emit('room data', existingRooms[n])
+            // let target = existingRooms[n].usersInRoom.indexOf(connectedUsers[i].username);
+            // existingRooms[n].usersInRoom.splice(target, 1)
+          }
+        }
+        connectedUsers.splice(i, 1);
         break
       }
     }
     console.log('user disconnected');
     console.log('current connected users: ')
     console.log(connectedUsers)
+    console.log('Current Rooms:')
+    console.log(existingRooms)
   });
 
 });

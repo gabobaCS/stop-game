@@ -10,7 +10,10 @@ export default class GameRoom extends Component {
         super(props)
         this.state = {
             roomName: this.props.match.params.roomName,
-            isUserLoggedIn: (sessionStorage.getItem('id') ==  this.props.socket.id) ? true : false
+            isUserLoggedIn: (sessionStorage.getItem('id') ==  this.props.socket.id) ? true : false,
+            usersInRoom: [],
+            dataReceived: false,
+            roomData: []
         }
     }
     componentDidMount(){
@@ -57,6 +60,38 @@ export default class GameRoom extends Component {
 
         //Handles duplicate requests on /rooms
         this.props.socket.removeAllListeners('list of rooms')
+
+        /*Handles GAME requests*/
+
+        //Asks socket for list of connected users.
+        this.props.socket.emit('request usersList', this.state.roomName);
+        this.props.socket.emit('request room data', this.state.roomName);
+                    //Adds usersInRoom to state.
+                    // this.props.socket.on('users in room', (usersInRoomList) => {
+                    //     console.log('Users in Room');
+                    //     console.log(usersInRoomList);
+                    //     if (this.state.usersInRoom = []){
+                    //         this.setState({
+                    //             usersInRoom: usersInRoomList
+                    //         })
+                    //     }
+                    // })
+        //Adds room data to state
+        this.props.socket.on('room data', (roomData) => {
+            console.log('received data')
+            this.setState({
+                'roomData': roomData,
+                dataReceived: true 
+            })
+            console.log('Received Data')
+        })
+
+        this.props.socket.on('all players ready in lobby', (roomObject) => {
+            this.setState({
+                'roomData': roomObject
+            })
+            console.log('All users ready')
+        })
     }
     //TODO CHECK IF THIS IS THIS IS THE APPROPRIATE METHOD
     componentDidUpdate(prevProps, prevState) {
@@ -68,6 +103,7 @@ export default class GameRoom extends Component {
                 //Dynamically join room.
                 if(sessionStorage.getItem('room') != this.props.match.params.roomName){
                     this.props.socket.emit('join room', {username: sessionStorage.getItem('username'), room: this.props.match.params.roomName, id:this.props.socket.id})
+                    this.props.socket.emit('request usersList', this.state.roomName);
                 }
             }
         }
@@ -77,14 +113,17 @@ export default class GameRoom extends Component {
         if (sessionStorage.getItem('username') == null){
             return (<Redirect to='/' />)
         }
+        console.log()
         return (
             <div className='game-room-canvas'>
-                <Cross />
+                <div onClick={() => this.props.history.push('/rooms')}>
+                    <Cross />
+                </div>
                 <h2 className='room-title'>{this.state.roomName}</h2>
                 <div className='room-flex'>
-                    <UsersData />
+                    <UsersData dataReceived={this.state.dataReceived} usersInRoom={(this.state.dataReceived)?this.state.roomData.usersInRoom:null}/>
                     <div className='game-room-flex-spacer'></div>
-                    <Lobby />
+                    <Lobby socket={this.props.socket} roomData={this.state.roomData}/>
                 </div>
             </div>
         )

@@ -38,7 +38,8 @@ export default class Rooms extends Component {
             console.log('should leave room')
             this.props.socket.emit('leave room', {username: sessionStorage.getItem('username'), room: sessionStorage.getItem('room'), id:sessionStorage.getItem('id')});
             //Handles duplicate messages in room by removing listener.
-            this.props.socket.removeAllListeners('succesful room join')
+            this.props.socket.removeAllListeners('succesful room join');
+            this.props.socket.removeAllListeners('room data');
             sessionStorage.setItem('room', null)
         }
 

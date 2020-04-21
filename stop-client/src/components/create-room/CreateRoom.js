@@ -99,7 +99,7 @@ export default class CreateRoom extends Component {
             })
         }
         else{
-            this.props.socket.emit('create room', {roomName: this.state.roomName, categories: this.state.categoriesList, inputType: this.state.inputType, usersInRoom: []});
+            this.props.socket.emit('create room', {roomName: this.state.roomName, categories: this.state.categoriesList, inputType: this.state.inputType, usersInRoom: [], gameState:'lobby'});
         }
     }
 
