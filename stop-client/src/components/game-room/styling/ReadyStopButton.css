@@ -1,12 +1,14 @@
 .ready-stop-button-svg{
-    transform: scale(1.1);
+    /* transform: scale(1.0); */
     position: absolute;
-    bottom: -30px;
-    right: -30px;
+    bottom: -50px;
+    right: -40px;
     cursor: pointer;
+    transform: rotate(15deg);
 }
 .ready-button-svg:hover{
-    transform: scale(1.15);
+    transform: rotate(0);
+    transform: scale(1.1);
 }
 .ready-button-active-svg{
     /* transform: scale(1.15); */

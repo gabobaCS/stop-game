@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import '../styling/Lobby.css';
 import LetterDisplay from '../LetterDisplay.js';
-import ReadyStopButton from '../ReadyStopButton.js'
+import ReadyStopButton from '../ReadyStopButton.js';
+import GameTyped from './GameTyped.js'
 
 export default class Lobby extends Component {
     constructor(props){
@@ -9,7 +10,7 @@ export default class Lobby extends Component {
         this.handleReadyButton = this.handleReadyButton.bind(this);
         this.state = {
             userReady: false,
-            // currentGameState:'lobby'
+            currentGameState:''
 
         }
     }
@@ -44,14 +45,21 @@ export default class Lobby extends Component {
            this.state.userReady ? screen = (<h4 className='user-instructions'>Waiting for other players...</h4>) : screen = (<h4 className='user-instructions'>Press Ready to Begin.</h4>);
            break
         case 'gameInProgress':
-            screen = 'game in progress'
+            console.log(this.props)
+            if (this.props.roomData.inputType == 'typed'){
+                screen = <GameTyped />
+            }
+            else if (this.props.roomData.inputType == 'pen-and-paper'){
+                screen = 'game in progress'
+            }
+
     }
         return (
 
             <div className='lobby-canvas'>
                 <LetterDisplay />
                 {screen}
-                <ReadyStopButton userReady={this.state.userReady} handleClick={() => this.handleReadyButton}/>
+                <ReadyStopButton userReady={this.state.userReady} currentGameState={this.state.currentGameState} handleClick={() => this.handleReadyButton}/>
 
             </div>
 

@@ -1,0 +1,45 @@
+.categories-wrapper{
+    width: 90%;
+}
+.categories-ul{
+    /* background-color: black; */
+    height: 402px;
+    margin: 0;
+    padding: 0 25px;
+    padding-right: 30px;
+    list-style: none;
+    font-size: 50px;
+    color: white;
+    text-shadow: rgb(0, 0, 0, 0.6) 4px 4px 6px;
+    text-align: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.categories-ul li{
+    width: 100%;
+
+
+    /* display: flex;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+    justify-content: center; */
+}
+/* .category-label-wrapper{
+    text-align: left;
+} */
+.categories-ul label{
+    text-align: left;
+}
+#categories-form input[type="text"]{
+    font-family: 'Mikado Ultra';
+    color: white;
+    font-size: 35px;
+    text-shadow: 4px 4px 4px rgb(0, 0, 0, 0.6);
+    background-color: rgb(255, 255, 255, 0.30);
+    border: none;
+    width:100%;
+    padding-left: 10px;
+}
+.categories-li-pairs{
+    display: flex;
+}
