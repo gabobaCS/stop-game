@@ -31,12 +31,19 @@ export default class Lobby extends Component {
         }
     }
 
-    handleReadyButton(){
-        this.setState({
-            userReady: true 
-        })
-        console.log('User ready')
-        this.props.socket.emit('player ready', {username:sessionStorage.username, roomName:sessionStorage.room})
+    handleReadyButton(action){
+        if (action == 'player ready'){
+            this.setState({
+                userReady: true 
+            })
+            console.log('User ready')
+            this.props.socket.emit('player ready', {username:sessionStorage.username, roomName:sessionStorage.room})
+        }
+        if (action == 'stop'){
+            console.log(this.props)
+            this.props.socket.emit('stop request', this.props.roomData.roomName)
+        }
+
     }
     render() {
         let screen;
@@ -45,9 +52,8 @@ export default class Lobby extends Component {
            this.state.userReady ? screen = (<h4 className='user-instructions'>Waiting for other players...</h4>) : screen = (<h4 className='user-instructions'>Press Ready to Begin.</h4>);
            break
         case 'gameInProgress':
-            console.log(this.props)
             if (this.props.roomData.inputType == 'typed'){
-                screen = <GameTyped />
+                screen = <GameTyped roomData={this.props.roomData} socket={this.props.socket}/>
             }
             else if (this.props.roomData.inputType == 'pen-and-paper'){
                 screen = 'game in progress'
@@ -59,7 +65,7 @@ export default class Lobby extends Component {
             <div className='lobby-canvas'>
                 <LetterDisplay />
                 {screen}
-                <ReadyStopButton userReady={this.state.userReady} currentGameState={this.state.currentGameState} handleClick={() => this.handleReadyButton}/>
+                <ReadyStopButton userReady={this.state.userReady} currentGameState={this.state.currentGameState} handleReadyButton={(action) => this.handleReadyButton(action)}/>
 
             </div>
 

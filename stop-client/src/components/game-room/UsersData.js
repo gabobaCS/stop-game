@@ -4,8 +4,19 @@ import './styling/UsersData.css';
 export default class UsersData extends Component {
     render() {
         let usersList = []
-console.log(this.props)
-        if (this.props.dataReceived){
+        console.log(this.props)
+        if (this.props.gameState == 'gameInProgress'){
+            usersList = this.props.usersInRoom.map((userObject) => {
+                return (
+                    <li key={userObject.username}>
+                        <h4 style={{color: 'white'}} >{userObject.username}</h4>
+                        <h5>{userObject.points} pts</h5>
+                        <hr />
+                    </li>
+                )
+            }); 
+        }
+        else if (this.props.dataReceived){
 
             usersList = this.props.usersInRoom.map((userObject) => {
                 return (

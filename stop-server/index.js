@@ -3,7 +3,9 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 let connectedUsers = [{username:'ddd', room: null, id: 'ARBITRARYID'}, {username:'gabriel', room: 'TEST', id: 'ARBITRARYID1'}]; //List of objects: [{username, id, room}]
-let existingRooms = [{roomName: 'TEST', gameState:'lobby', categories: ['food', 'country'], inputType: 'pen-and-paper', usersInRoom: [{username:'gabriel', playerReady: true, points: 0}]}]
+let existingRooms = [{roomName: 'TEST', gameState:'lobby', categories: ['food', 'country'], inputType: 'pen-and-paper', usersInRoom: [{username:'gabriel', playerReady: true, points: 0}]}];
+let roomsAnswers = []
+
 
 function userInConnectedUsers(user, connectedUsersList) {
   var i;
@@ -172,9 +174,22 @@ io.on('connection', function(socket){
       if(allUsersInRoomReady(targetRoom.usersInRoom, 'playerReady')){
         console.log('ALL PLAYERS READY FROM LOBBY:' + targetRoom.roomName)
         targetRoom.gameState = 'gameInProgress'
-        io.to(targetRoom.roomName).emit('all players ready in lobby', targetRoom)
-        
-      }
+        io.to(targetRoom.roomName).emit('all players ready in lobby', targetRoom)        
+      }      
+    })
+
+    //Handles Stop.
+    socket.on('stop request', (roomName) =>{
+      console.log('STOP IN:' + roomName)
+      io.to(roomName).emit('handle stop')
+    })
+    
+    socket.on('stop data', (categoriesUserObject) => {
+      console.log('received signal from:' + categoriesUserObject.username)
+      /*TODO: HANDLE MULTIPLE DATA TO CHECK THAT STOP DATA RECEIVED AND POINT EVALUATION*/
+      // console.log(categoriesUserObject);
+      // roomsAnswers.push(categoriesUserObject)
+      // console.log(roomsAnswers)
     })
 
 

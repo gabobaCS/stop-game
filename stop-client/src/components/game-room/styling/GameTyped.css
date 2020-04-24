@@ -3,7 +3,7 @@
 }
 .categories-ul{
     /* background-color: black; */
-    height: 402px;
+    height: 435px;
     margin: 0;
     padding: 0 25px;
     padding-right: 30px;
@@ -42,4 +42,5 @@
 }
 .categories-li-pairs{
     display: flex;
+    margin-bottom: 10px;
 }

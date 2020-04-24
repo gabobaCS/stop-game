@@ -121,7 +121,7 @@ export default class GameRoom extends Component {
                 </div>
                 <h2 className='room-title'>{this.state.roomName}</h2>
                 <div className='room-flex'>
-                    <UsersData dataReceived={this.state.dataReceived} usersInRoom={(this.state.dataReceived)?this.state.roomData.usersInRoom:null}/>
+                    <UsersData gameState={this.state.roomData.gameState} dataReceived={this.state.dataReceived} usersInRoom={(this.state.dataReceived)?this.state.roomData.usersInRoom:null}/>
                     <div className='game-room-flex-spacer'></div>
                     <Lobby socket={this.props.socket} roomData={this.state.roomData}/>
                 </div>
