@@ -1,0 +1,38 @@
+.stop-canvas{
+    text-align: center;
+}
+.stop-animation{
+    animation-name: appear;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    text-align: center;
+}
+.stop-text{
+    color: white;
+    font-size: 60px;
+    text-shadow: 6px 6px  1px #FF4646;
+    margin: 0;
+    margin-left: 10px;
+    /* margin-top: 10px; */
+    text-align: center;
+}
+.stop-user-instructions{
+    margin: 0;
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    position: relative;
+    top: 20px;
+}
+
+@keyframes appear{
+    0% {
+        transform: scale(0.3);
+    }
+    90% {
+        transform: scale(1.15);
+    }
+    100% {
+        transform: scale(0.95);
+    }
+}

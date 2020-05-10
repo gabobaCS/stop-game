@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import '../styling/Lobby.css';
 import LetterDisplay from '../LetterDisplay.js';
 import ReadyStopButton from '../ReadyStopButton.js';
-import GameTyped from './GameTyped.js'
+import GameTyped from './GameTyped.js';
+import Stop from './Stop.js';
 
 export default class Lobby extends Component {
     constructor(props){
@@ -14,6 +15,15 @@ export default class Lobby extends Component {
 
         }
     }
+    componentDidMount(){
+        this.props.socket.on('handle stop', () => {
+            this.setState({
+                currentGameState: 'stop',
+                userReady: false
+            })
+        })
+    }
+
     componentDidUpdate(prevProps){
         if (prevProps != this.props){
             console.log(this.props)
@@ -40,7 +50,7 @@ export default class Lobby extends Component {
             this.props.socket.emit('player ready', {username:sessionStorage.username, roomName:sessionStorage.room})
         }
         if (action == 'stop'){
-            console.log(this.props)
+            console.log('stop request will be emitted')
             this.props.socket.emit('stop request', this.props.roomData.roomName)
         }
 
@@ -58,6 +68,9 @@ export default class Lobby extends Component {
             else if (this.props.roomData.inputType == 'pen-and-paper'){
                 screen = 'game in progress'
             }
+            break
+        case 'stop':
+            screen = <Stop />
 
     }
         return (

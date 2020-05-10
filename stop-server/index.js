@@ -3,7 +3,10 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 let connectedUsers = [{username:'ddd', room: null, id: 'ARBITRARYID'}, {username:'gabriel', room: 'TEST', id: 'ARBITRARYID1'}]; //List of objects: [{username, id, room}]
-let existingRooms = [{roomName: 'TEST', gameState:'lobby', categories: ['food', 'country'], inputType: 'pen-and-paper', usersInRoom: [{username:'gabriel', playerReady: true, points: 0}]}];
+let existingRooms = [
+                      {roomName: 'TEST', gameState:'lobby', categories: ['food', 'country'], inputType: 'pen-and-paper', usersInRoom: [{username:'gabriel', playerReady: true, points: 0}]},
+                      {roomName: 'TEST2', gameState:'lobby', categories: ['food', 'country'], inputType: 'typed', usersInRoom: [{username:'gabriel', playerReady: true, points: 0}]}
+                    ];
 let roomsAnswers = []
 
 
@@ -41,6 +44,14 @@ function allUsersInRoomReady(listOfObjects, property){
     }
   }
   return true
+}
+
+function changeKeysInList(listOfPlayers, property, newProp){
+  let newPlayerList = [...listOfPlayers];
+  for (let i = 0; i < newPlayerList.length; i++){
+    newPlayerList[i][property] = newProp
+  }
+  return newPlayerList
 }
 
 io.on('connection', function(socket){
@@ -181,11 +192,19 @@ io.on('connection', function(socket){
     //Handles Stop.
     socket.on('stop request', (roomName) =>{
       console.log('STOP IN:' + roomName)
+      console.log('index of room:')
+      let index = indexOfObjectProp(existingRooms, 'roomName', roomName)
+
+      existingRooms[index]['usersInRoom'] = changeKeysInList(existingRooms[index]['usersInRoom'], 'playerReady', false)
+      console.log(existingRooms[index])
       io.to(roomName).emit('handle stop')
+
     })
     
     socket.on('stop data', (categoriesUserObject) => {
       console.log('received signal from:' + categoriesUserObject.username)
+      console.log(categoriesUserObject)
+      console.log('received stop info')
       /*TODO: HANDLE MULTIPLE DATA TO CHECK THAT STOP DATA RECEIVED AND POINT EVALUATION*/
       // console.log(categoriesUserObject);
       // roomsAnswers.push(categoriesUserObject)

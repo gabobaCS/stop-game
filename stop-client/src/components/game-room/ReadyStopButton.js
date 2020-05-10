@@ -18,7 +18,7 @@ export default class ReadyStopButton extends Component {
     }
     render() {
         let button;
-        if (this.props.currentGameState == 'lobby' || this.props.currentGameState == '' ){
+        if (this.props.currentGameState == 'lobby' || this.props.currentGameState == '' || this.props.currentGameState == 'stop' ){
             button= (
                 <div>
                     <img className='ready-stop-button-svg ready-button-svg' style={(!this.props.userReady)?{display:''}:{display:'none'}} src={ReadyButtonSVG} alt="Ready"  onClick={() => this.handleClick('player ready')}/>
@@ -36,7 +36,6 @@ export default class ReadyStopButton extends Component {
         return (
             <React.Fragment>
             {button}
-
             </React.Fragment>
 
         )

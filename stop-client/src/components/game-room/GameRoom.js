@@ -78,18 +78,19 @@ export default class GameRoom extends Component {
                     // })
         //Adds room data to state
         this.props.socket.on('room data', (roomData) => {
-            console.log('received data')
+            console.log('received room data')
+            console.log(roomData)
             this.setState({
                 'roomData': roomData,
-                dataReceived: true 
+                dataReceived: true
             })
-            console.log('Received Data')
         })
 
         this.props.socket.on('all players ready in lobby', (roomObject) => {
             this.setState({
                 'roomData': roomObject
             })
+            console.log(roomObject)
             console.log('All users ready')
         })
     }

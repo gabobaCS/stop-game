@@ -20,8 +20,7 @@ export default class GameTyped extends Component {
 
     componentDidMount(){
         this.props.socket.on('handle stop', () => {
-            console.log(this.props)
-            console.log(this.state.categories)
+            console.log('stop data will be emmited')
             this.props.socket.emit('stop data', {categories: this.state.categories, username: sessionStorage.getItem('username')})
         })
 
